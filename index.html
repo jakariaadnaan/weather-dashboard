@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Dashboard</title>
+    <meta
+      name="description"
+      content="A modern weather dashboard using the Open-Meteo public weather API"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark">☀️</div>
+          <div>
+            <p class="eyebrow">Forecast</p>
+            <h1>Weather Dashboard</h1>
+          </div>
+        </div>
+
+        <form id="search-form" class="search-form" autocomplete="off">
+          <input
+            id="city-input"
+            type="text"
+            placeholder="Search city"
+            aria-label="Search city"
+          />
+          <button type="submit">Search</button>
+        </form>
+      </header>
+
+      <main class="dashboard">
+        <section class="hero-card card">
+          <div class="location-row">
+            <div>
+              <p id="location-name" class="location-name">Loading...</p>
+              <p id="last-updated" class="last-updated">Updating...</p>
+            </div>
+            <div id="weather-emoji" class="weather-emoji" aria-label="Weather condition">☀️</div>
+          </div>
+
+          <div class="hero-main">
+            <div>
+              <p class="label">Now</p>
+              <div class="temp-row">
+                <span id="current-temp" class="current-temp">--°</span>
+                <span id="weather-desc" class="weather-desc">--</span>
+              </div>
+            </div>
+
+            <div class="stats-grid">
+              <div class="stat-item">
+                <span class="stat-label">Feels like</span>
+                <strong id="feels-like">--°</strong>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Humidity</span>
+                <strong id="humidity">--%</strong>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Wind</span>
+                <strong id="wind-speed">-- km/h</strong>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Rain</span>
+                <strong id="precipitation">-- mm</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-header">
+            <h2>Next 12 hours</h2>
+          </div>
+          <div id="hourly-forecast" class="hourly-forecast"></div>
+        </section>
+
+        <section class="card">
+          <div class="section-header">
+            <h2>7-day forecast</h2>
+          </div>
+          <div id="daily-forecast" class="daily-forecast"></div>
+        </section>
+      </main>
+    </div>
+
+    <template id="hourly-item-template">
+      <div class="hour-item">
+        <span class="hour-time"></span>
+        <span class="hour-icon"></span>
+        <span class="hour-temp"></span>
+      </div>
+    </template>
+
+    <template id="daily-item-template">
+      <div class="day-row">
+        <span class="day-name"></span>
+        <span class="day-icon"></span>
+        <span class="day-temp-range"></span>
+      </div>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
