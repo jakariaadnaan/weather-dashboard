@@ -3,111 +3,189 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Weather Dashboard</title>
-    <meta
-      name="description"
-      content="A modern weather dashboard using the Open-Meteo public weather API"
-    />
+    <meta name="description" content="Professional weather dashboard with real-time forecasting" />
+    <meta name="theme-color" content="#0f172a" />
+    <title>WeatherHub – Real-time Weather Forecasting</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="app-shell">
-      <header class="topbar">
-        <div class="brand">
-          <div class="brand-mark">☀️</div>
-          <div>
-            <p class="eyebrow">Forecast</p>
-            <h1>Weather Dashboard</h1>
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+            </svg>
+            <span>WeatherHub</span>
           </div>
+
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+            <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+          </button>
         </div>
 
-        <form id="search-form" class="search-form" autocomplete="off">
-          <input
-            id="city-input"
-            type="text"
-            placeholder="Search city"
-            aria-label="Search city"
-          />
-          <button type="submit">Search</button>
-        </form>
-      </header>
+        <div class="search-container">
+          <form id="searchForm" class="search-form">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <input type="text" id="searchInput" placeholder="Search city or location" autocomplete="off" />
+            <button type="submit" aria-label="Search">→</button>
+          </form>
+        </div>
 
-      <main class="dashboard">
-        <section class="hero-card card">
-          <div class="location-row">
-            <div>
-              <p id="location-name" class="location-name">Loading...</p>
-              <p id="last-updated" class="last-updated">Updating...</p>
-            </div>
-            <div id="weather-emoji" class="weather-emoji" aria-label="Weather condition">☀️</div>
+        <div class="favorites-section">
+          <div class="favorites-header">
+            <h3>Saved Locations</h3>
+            <button class="clear-favorites" id="clearFavorites" title="Clear all">×</button>
+          </div>
+          <div id="favoritesList" class="favorites-list"></div>
+          <div id="emptyState" class="empty-state">
+            <p>No saved locations yet</p>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <div class="header-section">
+          <div class="breadcrumb">
+            <span id="locationBreadcrumb">Loading...</span>
+            <span class="separator">•</span>
+            <span id="timeBreadcrumb" class="time-breadcrumb">--:--</span>
           </div>
 
-          <div class="hero-main">
-            <div>
-              <p class="label">Now</p>
-              <div class="temp-row">
-                <span id="current-temp" class="current-temp">--°</span>
-                <span id="weather-desc" class="weather-desc">--</span>
+          <button class="save-location" id="saveLocationBtn" title="Save this location" aria-label="Save location">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+              <polyline points="17 21 17 13 7 13 7 21" />
+              <polyline points="7 3 7 8 15 8" />
+            </svg>
+          </button>
+        </div>
+
+        <section class="current-weather">
+          <div class="weather-main">
+            <div class="temp-display">
+              <div class="temperature">
+                <span id="currentTemp" class="temp-value">--</span>
+                <span class="temp-unit">°C</span>
+              </div>
+
+              <div class="weather-description">
+                <span id="weatherCondition" class="condition-text">Loading...</span>
+                <span id="feelsLike" class="feels-like">Feels like --°</span>
               </div>
             </div>
 
-            <div class="stats-grid">
-              <div class="stat-item">
-                <span class="stat-label">Feels like</span>
-                <strong id="feels-like">--°</strong>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">Humidity</span>
-                <strong id="humidity">--%</strong>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">Wind</span>
-                <strong id="wind-speed">-- km/h</strong>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">Rain</span>
-                <strong id="precipitation">-- mm</strong>
-              </div>
+            <div class="weather-icon-large" id="weatherIconLarge">☀️</div>
+          </div>
+
+          <div class="weather-metrics">
+            <div class="metric-card">
+              <div class="metric-label">Humidity</div>
+              <div class="metric-value" id="humidityValue">--%</div>
+              <div class="metric-bar"><div class="metric-fill" id="humidityBar" style="width: 0%"></div></div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Wind Speed</div>
+              <div class="metric-value" id="windValue">-- km/h</div>
+              <div class="metric-bar"><div class="metric-fill" id="windBar" style="width: 0%"></div></div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Pressure</div>
+              <div class="metric-value" id="pressureValue">-- mb</div>
+              <div class="metric-bar"><div class="metric-fill" id="pressureBar" style="width: 0%"></div></div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Visibility</div>
+              <div class="metric-value" id="visibilityValue">-- km</div>
+              <div class="metric-bar"><div class="metric-fill" id="visibilityBar" style="width: 0%"></div></div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">UV Index</div>
+              <div class="metric-value" id="uvValue">--</div>
+              <div class="metric-bar"><div class="metric-fill" id="uvBar" style="width: 0%"></div></div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Rain Chance</div>
+              <div class="metric-value" id="rainValue">--%</div>
+              <div class="metric-bar"><div class="metric-fill" id="rainBar" style="width: 0%"></div></div>
             </div>
           </div>
         </section>
 
-        <section class="card">
+        <section class="hourly-section">
           <div class="section-header">
-            <h2>Next 12 hours</h2>
+            <h2>Hourly Forecast</h2>
+            <span class="section-subtitle">Next 24 hours</span>
           </div>
-          <div id="hourly-forecast" class="hourly-forecast"></div>
+          <div class="hourly-scroll">
+            <div class="hourly-container" id="hourlyContainer"></div>
+          </div>
         </section>
 
-        <section class="card">
+        <section class="daily-section">
           <div class="section-header">
-            <h2>7-day forecast</h2>
+            <h2>7-Day Forecast</h2>
+            <span class="section-subtitle">Extended outlook</span>
           </div>
-          <div id="daily-forecast" class="daily-forecast"></div>
+          <div class="daily-container" id="dailyContainer"></div>
         </section>
+
+        <footer class="app-footer">
+          <p>Data powered by <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a> • Last updated <span id="lastUpdated">--:--</span></p>
+        </footer>
       </main>
     </div>
 
-    <template id="hourly-item-template">
-      <div class="hour-item">
-        <span class="hour-time"></span>
-        <span class="hour-icon"></span>
-        <span class="hour-temp"></span>
+    <template id="hourlyItemTemplate">
+      <div class="hourly-item">
+        <div class="hourly-time"></div>
+        <div class="hourly-icon"></div>
+        <div class="hourly-temp"></div>
       </div>
     </template>
 
-    <template id="daily-item-template">
-      <div class="day-row">
-        <span class="day-name"></span>
-        <span class="day-icon"></span>
-        <span class="day-temp-range"></span>
+    <template id="dailyItemTemplate">
+      <div class="daily-item">
+        <div class="daily-date"></div>
+        <div class="daily-condition">
+          <div class="daily-icon"></div>
+          <span class="daily-desc"></span>
+        </div>
+        <div class="daily-temps">
+          <span class="daily-high"></span>
+          <span class="daily-low"></span>
+        </div>
+        <div class="daily-extras">
+          <span class="daily-humidity"></span>
+          <span class="daily-wind"></span>
+        </div>
       </div>
+    </template>
+
+    <template id="favoriteItemTemplate">
+      <button class="favorite-item" data-city="">
+        <span class="favorite-name"></span>
+        <span class="favorite-temp"></span>
+      </button>
     </template>
 
     <script src="app.js"></script>
