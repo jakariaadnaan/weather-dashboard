@@ -1,147 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Professional weather dashboard with real-time forecasting" />
-  <meta name="theme-color" content="#ffffff" />
-  <title>WeatherHub – Real-time Weather Forecasting</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <div class="app-container">
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <div class="logo">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M12 3v1m6.66 1.34l-.707.707m2.828 2.828h-1m0 6h1m-1-12.14l.707.707M5.64 5.64l-.707-.707M12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" />
-          </svg>
-          <span>WeatherHub</span>
-        </div>
-      </div>
-
-      <div class="search-container">
-        <form id="searchForm" class="search-form">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"></circle>
-            <path d="m21 21-4.35-4.35"></path>
-          </svg>
-          <input type="text" id="searchInput" placeholder="Search city..." autocomplete="off" />
-        </form>
-      </div>
-
-      <div class="favorites-section">
-        <div class="favorites-header">
-          <h3>Saved Locations</h3>
-        </div>
-        <div id="favoritesList" class="favorites-list"></div>
-        <div id="emptyState" class="empty-state">
-          <p>No saved locations</p>
-        </div>
-      </div>
-    </aside>
-
-    <main class="main-content">
-      <header class="top-header">
-        <div>
-          <h1 id="locationName">Loading...</h1>
-          <p id="locationTime" class="location-time">--:--</p>
-        </div>
-        <button class="save-btn" id="saveBtn" title="Save location">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-            <polyline points="17 21 17 13 7 13 7 21"></polyline>
-            <polyline points="7 3 7 8 15 8"></polyline>
-          </svg>
-        </button>
-      </header>
-
-      <section class="current-weather-card">
-        <div class="weather-header">
-          <div>
-            <div class="temp-large" id="currentTemp">--°</div>
-            <p class="weather-condition" id="weatherCondition">Loading...</p>
-            <p class="feels-like" id="feelsLike">Feels like --°</p>
-          </div>
-          <div class="weather-icon" id="weatherIcon">
-            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Professional weather dashboard with real-time forecasting" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>WeatherHub – Real-time Weather Forecasting</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <path d="M12 3v1m6.66 1.34l-.707.707m2.828 2.828h-1m0 6h1m-1-12.14l.707.707M5.64 5.64l-.707-.707M12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" />
             </svg>
+            <span>WeatherHub</span>
           </div>
+          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">☀️</button>
         </div>
 
-        <div class="weather-grid">
-          <div class="weather-item">
-            <span class="item-label">Humidity</span>
-            <span class="item-value" id="humidity">--%</span>
+        <div class="search-container">
+          <form id="searchForm" class="search-form">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <input type="text" id="searchInput" placeholder="Search city..." autocomplete="off" />
+          </form>
+        </div>
+
+        <div class="unit-toggle" aria-label="Temperature unit selector">
+          <button class="unit-btn active" data-unit="C" type="button">°C</button>
+          <button class="unit-btn" data-unit="F" type="button">°F</button>
+        </div>
+
+        <div class="favorites-section">
+          <div class="favorites-header">
+            <h3>Saved Locations</h3>
           </div>
-          <div class="weather-item">
-            <span class="item-label">Wind</span>
-            <span class="item-value" id="wind">-- km/h</span>
-          </div>
-          <div class="weather-item">
-            <span class="item-label">Pressure</span>
-            <span class="item-value" id="pressure">-- mb</span>
-          </div>
-          <div class="weather-item">
-            <span class="item-label">Visibility</span>
-            <span class="item-value" id="visibility">-- km</span>
+          <div id="favoritesList" class="favorites-list"></div>
+          <div id="emptyState" class="empty-state">
+            <p>No saved locations</p>
           </div>
         </div>
-      </section>
+      </aside>
 
-      <section class="forecast-section">
-        <h2>Hourly Forecast</h2>
-        <div class="hourly-scroll">
-          <div class="hourly-list" id="hourlyList"></div>
-        </div>
-      </section>
+      <main class="main-content">
+        <header class="top-header">
+          <div>
+            <h1 id="locationName">Loading...</h1>
+            <p id="locationTime" class="location-time">--:--</p>
+          </div>
+          <button class="save-btn" id="saveBtn" title="Save location" type="button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+          </button>
+        </header>
 
-      <section class="forecast-section">
-        <h2>7-Day Forecast</h2>
-        <div class="daily-list" id="dailyList"></div>
-      </section>
+        <section class="current-weather-card">
+          <div class="weather-header">
+            <div>
+              <div class="temp-large" id="currentTemp">--°</div>
+              <p class="weather-condition" id="weatherCondition">Loading...</p>
+              <p class="feels-like" id="feelsLike">Feels like --°</p>
+            </div>
+            <div class="weather-icon" id="weatherIcon"></div>
+          </div>
 
-      <footer class="footer">
-        <p>Data from <a href="https://open-meteo.com" target="_blank">Open-Meteo</a> • Updated <span id="updateTime">--:--</span></p>
-      </footer>
-    </main>
-  </div>
+          <div class="weather-grid">
+            <div class="weather-item">
+              <span class="item-label">Humidity</span>
+              <span class="item-value" id="humidity">--%</span>
+            </div>
+            <div class="weather-item">
+              <span class="item-label">Wind</span>
+              <span class="item-value" id="wind">-- km/h</span>
+            </div>
+            <div class="weather-item">
+              <span class="item-label">Pressure</span>
+              <span class="item-value" id="pressure">-- mb</span>
+            </div>
+            <div class="weather-item">
+              <span class="item-label">Visibility</span>
+              <span class="item-value" id="visibility">-- km</span>
+            </div>
+          </div>
 
-  <template id="hourlyTemplate">
-    <div class="hourly-item">
-      <span class="hourly-time"></span>
-      <svg class="hourly-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"></svg>
-      <span class="hourly-temp"></span>
+          <div class="detail-grid">
+            <div class="detail-box">
+              <span class="detail-label">Sunrise</span>
+              <span class="detail-value" id="sunrise">--:--</span>
+            </div>
+            <div class="detail-box">
+              <span class="detail-label">Sunset</span>
+              <span class="detail-value" id="sunset">--:--</span>
+            </div>
+            <div class="detail-box">
+              <span class="detail-label">UV Index</span>
+              <span class="detail-value" id="uvIndex">--</span>
+            </div>
+            <div class="detail-box">
+              <span class="detail-label">Air Quality</span>
+              <span class="detail-value" id="aqi">--</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="forecast-section">
+          <h2>Hourly Forecast</h2>
+          <div class="hourly-scroll">
+            <div class="hourly-list" id="hourlyList"></div>
+          </div>
+        </section>
+
+        <section class="forecast-section">
+          <h2>7-Day Forecast</h2>
+          <div class="daily-list" id="dailyList"></div>
+        </section>
+
+        <footer class="footer">
+          <p>Data from <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a> • Updated <span id="updateTime">--:--</span></p>
+        </footer>
+      </main>
     </div>
-  </template>
 
-  <template id="dailyTemplate">
-    <div class="daily-item">
-      <div class="daily-left">
-        <span class="daily-date"></span>
-        <div class="daily-icon-small">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"></svg>
+    <template id="hourlyTemplate">
+      <div class="hourly-item">
+        <span class="hourly-time"></span>
+        <svg class="hourly-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"></svg>
+        <span class="hourly-temp"></span>
+      </div>
+    </template>
+
+    <template id="dailyTemplate">
+      <div class="daily-item">
+        <div class="daily-left">
+          <span class="daily-date"></span>
+          <div class="daily-icon-small">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"></svg>
+          </div>
+        </div>
+        <span class="daily-condition"></span>
+        <div class="daily-temps">
+          <span class="daily-high"></span>
+          <span class="daily-low"></span>
         </div>
       </div>
-      <span class="daily-condition"></span>
-      <div class="daily-temps">
-        <span class="daily-high"></span>
-        <span class="daily-low"></span>
-      </div>
-    </div>
-  </template>
+    </template>
 
-  <template id="favoriteTemplate">
-    <button class="favorite-btn" data-city="">
-      <span class="favorite-name"></span>
-      <span class="favorite-temp"></span>
-    </button>
-  </template>
+    <template id="favoriteTemplate">
+      <button class="favorite-btn" data-city="" type="button">
+        <span class="favorite-name"></span>
+        <span class="favorite-temp"></span>
+      </button>
+    </template>
 
-  <script src="app.js"></script>
-</body>
+    <script src="app.js"></script>
+  </body>
 </html>
